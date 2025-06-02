@@ -1,0 +1,21 @@
+FROM node:slim
+
+WORKDIR /app
+
+COPY ./apps/backend/package*.json ./
+
+RUN npm install
+
+RUN npm install -g typescript ts-node
+
+RUN apt-get update -y && apt-get install -y openssl
+
+COPY ./apps/backend/ ./
+
+RUN npx prisma generate
+
+RUN npm run build
+
+EXPOSE 4000
+
+CMD ["npm", "start"]

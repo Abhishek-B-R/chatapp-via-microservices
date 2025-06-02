@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: chatapp-backend
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@chatapp-postgres:5432/postgres
+    depends_on:
+      - postgres
+    networks:
+      - chatapp-network
+
+  frontend:
+    container_name: chatapp-frontend
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - chatapp-network
+  ws:
+    container_name: chatapp-ws
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ws
+    ports:
+      - "8080:8080"
+    networks:
+      - chatapp-network
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5433:5432"
+    container_name: chatapp-postgres
+    networks:
+      - chatapp-network
+  
+networks:
+  chatapp-network:
