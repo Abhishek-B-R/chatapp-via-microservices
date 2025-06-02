@@ -1,8 +1,14 @@
 # To start this project locally, run 
 
 ---
+### To build dockerfiles and then run them
 ```bash
-docker-compose up
+docker-compose up --build
+```
+
+### To just run the docker containers
+```bash
+dcker-compose up
 ```
 
 ---
